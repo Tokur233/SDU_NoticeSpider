@@ -1,3 +1,5 @@
 # 忽略excel文件
 *.csv
-&.xlsx
+*.xlsx
+*.md
+temp.py

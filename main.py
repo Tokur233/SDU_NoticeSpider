@@ -3,6 +3,7 @@
 import csv
 import re
 import time
+import os
 
 #模块化
 # import SDUMath 
@@ -22,6 +23,7 @@ def targetMatch(i,rows):
     match i:
         case 1:
             sources.append("计科本科院")
+            
             pass
         case 2:
             sources.append("本科生院")
@@ -36,7 +38,7 @@ def targetMatch(i,rows):
             sources.append("青春山大")
             pass
 
-print("请选择你的攻击(爬取)网站:")
+print("请选择你的攻击网站(bushi):")
 print("[1]山大计科本科院(未完成)")
 print("[2]山大本科生院")
 print("[3]山大学生在线(未完成)")
@@ -53,9 +55,11 @@ for i in targets:
     targetMatch(i,rows)
 source = ",".join(sources) #用逗号分割，将sources元素并放在一起
 rows.insert(0,["爬取时间:"+localtime,"爬取来源:"+source])
+if not os.path.exists("results"):
+    os.makedirs("results")
 with open(r"results/"+source+str(localtime)+".csv","w",newline="",encoding="utf-8-sig") as f_output:
     csv_output = csv.writer(f_output)
     csv_output.writerows(rows)
 
 
-# TODO: 多网站、可视化(GUI)、网页内容获取
+# TODO: 多网站、网页内容获取
