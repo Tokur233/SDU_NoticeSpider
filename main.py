@@ -6,7 +6,7 @@ import time
 
 #模块化
 # import SDUMath 
-import undergraduate
+import src.undergraduate as undergraduate
 # import SDUComputerScience
 # import SDUStudentOnline
 
