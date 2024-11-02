@@ -1,0 +1,3 @@
+# 忽略excel文件
+*.csv
+&.xlsx
