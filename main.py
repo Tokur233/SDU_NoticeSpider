@@ -8,6 +8,7 @@ import os
 #模块化
 # import SDUMath 
 import src.undergraduate as undergraduate
+import src.general as general
 # import SDUComputerScience
 # import SDUStudentOnline
 

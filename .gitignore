@@ -2,4 +2,10 @@
 *.csv
 *.xlsx
 *.md
+*.pyc
+*.png
+*.jpg
+*.jpeg
+*.gif
+
 temp.py
