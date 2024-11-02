@@ -1,6 +1,10 @@
 # 忽略excel文件
 *.csv
 *.xlsx
+*.docx
+*.pdf
+*.mp4
+*.rar
 *.md
 *.pyc
 *.png

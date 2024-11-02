@@ -7,8 +7,7 @@ import os
 
 #模块化
 # import SDUMath 
-import src.undergraduate as undergraduate
-import src.general as general
+
 # import SDUComputerScience
 # import SDUStudentOnline
 
@@ -51,6 +50,7 @@ target=input()
 targets = re.findall(r'\d',target)
 sources=[]
 rows =[[]]
+import src.undergraduate as undergraduate #导入undergraduate和general 并初始化cookies init
 for i in targets:
     i=int(i)
     targetMatch(i,rows)
