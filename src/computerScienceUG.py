@@ -1,6 +1,4 @@
 from bs4 import (BeautifulSoup)
-import urllib.request
-from urllib.parse import urljoin #提供urljoin方法，便于处理动态链接，防止出现多次斜杠，并且防止多个域名,urlparse用于解析url，其中.netloc为域名
 from urllib.error import HTTPError
 import re
 import src.general as general
@@ -33,10 +31,6 @@ def newsProcess(newsList,category,rows):
         newsDate = year_month +"-"+ day
         newsTitle = newsItem.find("a").get('title')
         aTagHref = newsItem.find("a").get('href')
-        # if aTagHref.startswith("http"):
-        #     newsHref = aTagHref
-        # else:
-        #     newsHref = urljoin(URL_CS,aTagHref)
         newsHref = general.dynamicRefProcess(URL_CS,aTagHref)
         rows.append([newsDate,newsTitle,newsHref])
         try:
@@ -54,10 +48,6 @@ def noticeProcess(noticeList,category,rows):
         noticeDate = noticeItem.find("span",attrs={"class":"dates"}).getText()
         noticeTitle = noticeItem.find("a").get('title')
         aTagHref = noticeItem.find("a").get('href')
-        # if aTagHref.startswith("http"):
-        #     noticeHref = aTagHref
-        # else:
-        #     noticeHref = urljoin(URL_CS,aTagHref)
         noticeHref = general.dynamicRefProcess(URL_CS,aTagHref)
         rows.append([noticeDate,noticeTitle,noticeHref])
         try:
@@ -76,10 +66,6 @@ def reportProcess(reportList,category,rows):
         reportAddress = reportItem.find("p",attrs={"class":"adress"})
         reportTitle = reportItem.find("a").get('title')
         aTagHref = reportItem.find("a").get('href')
-        # if aTagHref.startswith("http"):
-        #     reportHref = aTagHref
-        # else:
-        #     reportHref = urljoin(URL_CS,aTagHref)
         reportHref = general.dynamicRefProcess(URL_CS,aTagHref)
         rows.append([reportTime,reportAddress,reportTitle,reportHref])
         try:

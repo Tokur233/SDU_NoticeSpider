@@ -22,6 +22,10 @@ url_Math="https://www.math.sdu.edu.cn/"
 localtime = time.strftime("%Y-%m-%d", time.localtime())
 
 #函数
+def initCookieJson():
+    validCookiesDict = ci.validCookiesInit()
+    with open("cookies.json","w") as cookies:
+        json.dump(validCookiesDict,cookies,indent= 4)
 def targetMatch(i,rows):
     match i:
         case 1:
@@ -44,9 +48,11 @@ def targetMatch(i,rows):
             sources.append("青春山大")
             pass
             rows.append([])
+        case _:
+            pass
 
 print("请选择你的攻击网站(bushi):")
-print("[1]山大计科学院(未完成)")
+print("[1]山大计科学院")
 print("[2]山大本科生院")
 print("[3]山大学生在线(未完成)")
 print("[4]山大数学本科院(未完成)")
@@ -57,9 +63,7 @@ target=input()
 targets = re.findall(r'\d',target)
 sources=[]
 rows =[[]]
-validCookiesDict = ci.validCookiesInit()
-with open("cookies.json","w") as cookies:
-    json.dump(validCookiesDict,cookies,indent= 4)
+initCookieJson()
 for i in targets:
     i=int(i)
     targetMatch(i,rows)

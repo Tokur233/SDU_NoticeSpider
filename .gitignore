@@ -2,6 +2,7 @@
 *.csv
 *.xlsx
 *.docx
+*.doc
 *.pdf
 *.mp4
 *.rar

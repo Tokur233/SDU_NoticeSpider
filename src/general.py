@@ -47,16 +47,10 @@ def noticeGet(url_notice,noticePage,source,category): #category指工作通知�
     # print(url_parse)
     domain = url_parse.scheme+"://"+url_parse.netloc  #传输协议protocol (scheme)加上域名domain (netloc)
     for tag_a in noticePage.find_all('a',href=True): #href有内容即为True
-        # href = tag_a['href']
-        # if not href.startswith('http'):
-        #     tag_a['href'] = urljoin(domain,href)
         tag_a['href'] = dynamicRefProcess(domain,tag_a['href'])
     for tag_script in noticePage.find_all('script'):
         tag_script.decompose()
     for tag_img in noticePage.find_all('img',src=True):
-        # src_img = tag_img['src']
-        # if not src_img.startswith('http'):
-        #     tag_img['src'] = urljoin(domain,src_img)
         tag_img['src'] = dynamicRefProcess(domain,tag_img['src'])
     # Title get
     titleDiv = noticePage.find("div",attrs={"id":"newsTitle"})
@@ -86,11 +80,12 @@ def noticeGet(url_notice,noticePage,source,category): #category指工作通知�
             with open(attachmentPath,'wb') as file:
                 file.write(attachment.content)
     noticeHTML = noticePage.prettify() #转为str的同时，格式化HTML 已经处理了markdown识别空格导致转成代码块的问题.
-    noticeHTML_noCR = re.sub(r"\n(.*?点击次数)",r"\1",noticeHTML) #用括号创建捕获组，\1代替捕获组，以此将捕获组前的\n去除
+    noticeHTML = re.sub(r"\n(.*?点击次数)",r"\1",noticeHTML) #用括号创建捕获组，\1代替捕获组，以此将捕获组前的\n去除
+    noticeHTML = re.sub(r"<!--.*?-->",r"",noticeHTML,flags=re.DOTALL) #flag让.可以匹配换行等
     filePath= path + titleText + ".md"
     auto_mkdir(filePath)
     with open(filePath,"w",encoding="utf-8-sig") as noticeText:
-        noticeText.write(noticeHTML_noCR)
+        noticeText.write(noticeHTML)
 
 
 
