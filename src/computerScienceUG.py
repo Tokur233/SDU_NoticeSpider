@@ -62,8 +62,8 @@ def noticeProcess(noticeList,category,rows):
 def reportProcess(reportList,category,rows):
     reportItems = reportList.find_all("li")
     for reportItem in reportItems:
-        reportTime = reportItem.find("p",attrs={"class":"time"})
-        reportAddress = reportItem.find("p",attrs={"class":"adress"})
+        reportTime = reportItem.find("p",attrs={"class":"time"}).getText()
+        reportAddress = reportItem.find("p",attrs={"class":"adress"}).getText()
         reportTitle = reportItem.find("a").get('title')
         aTagHref = reportItem.find("a").get('href')
         reportHref = general.dynamicRefProcess(URL_CS,aTagHref)

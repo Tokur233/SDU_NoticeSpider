@@ -10,6 +10,7 @@ import json
 # import SDUMath 
 import src.computerScienceUG as csug
 import src.undergraduate as ug 
+import src.youthSDU as youth
 # import SDUStudentOnline
 
 import src.cookiesInit as ci
@@ -46,7 +47,7 @@ def targetMatch(i,rows):
             rows.append([])
         case 5:
             sources.append("青春山大")
-            pass
+            youth.CrawlYouth(rows)
             rows.append([])
         case _:
             pass
@@ -76,4 +77,4 @@ with open(r"results/"+source+str(localtime)+".csv","w",newline="",encoding="utf-
     csv_output.writerows(rows)
 
 
-# TODO: 多网站、网页内容获取
+# TODO: GUI、统一模块，将内容处理统一成，从文档获取时间，标题的机制、自动爬取
