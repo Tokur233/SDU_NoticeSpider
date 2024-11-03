@@ -2,7 +2,6 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from PIL import Image
 import pytesseract
-import time
 
 def getAttachmentCookie(url):
     driver = webdriver.Chrome()  
@@ -34,6 +33,6 @@ def validCookiesInit(): #此处仅初始化3个网站的有效cookies，即本�
 if __name__ =="__main__":
     cDict = validCookiesInit()
     print(cDict)
-else :
-    validCookiesDict = validCookiesInit()
-    print(validCookiesDict)
+# else :
+#     validCookiesDict = validCookiesInit()
+#     print(validCookiesDict)

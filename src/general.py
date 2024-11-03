@@ -2,9 +2,10 @@ import os
 import re
 from bs4 import BeautifulSoup
 from urllib.parse import urlparse,urljoin
+import urllib.request
 #附件下载
 import requests
-from src.cookiesInit import validCookiesDict #导入并初始化validCookiesDict
+import json
 
 #常量
 from src.constant import HEADER
@@ -13,6 +14,18 @@ def auto_mkdir(path):
     folder = os.path.dirname(path)
     if not os.path.exists(folder):
         os.makedirs(folder)
+
+def dynamicRefProcess(url,href):
+    if href.startswith('http'):
+        return href
+    else:
+        return urljoin(url,href)
+
+def getPage(url):  #获取tag类型的page，即soup
+    request = urllib.request.Request(url=url,headers=HEADER)
+    page = urllib.request.urlopen(request)
+    soup = BeautifulSoup(page,"html.parser")
+    return soup
 
 def getImage(page,path):
     i = 1 #图片名计数
@@ -27,23 +40,27 @@ def getImage(page,path):
         with open(imgPath,'wb') as img:
             img.write(img_response.content)
         i= i+1
+
 def noticeGet(url_notice,noticePage,source,category): #category指工作通知等类别，source指本科生院等来源
     # 处理动态链接，替换为静态链接(包括附件、图片) 其中script由于无法加载，直接开摆清除
     url_parse = urlparse(url_notice)
+    # print(url_parse)
     domain = url_parse.scheme+"://"+url_parse.netloc  #传输协议protocol (scheme)加上域名domain (netloc)
     for tag_a in noticePage.find_all('a',href=True): #href有内容即为True
-        href = tag_a['href']
-        if not href.startswith('http'):
-            tag_a['href'] = urljoin(domain,href)
+        # href = tag_a['href']
+        # if not href.startswith('http'):
+        #     tag_a['href'] = urljoin(domain,href)
+        tag_a['href'] = dynamicRefProcess(domain,tag_a['href'])
     for tag_script in noticePage.find_all('script'):
         tag_script.decompose()
     for tag_img in noticePage.find_all('img',src=True):
-        src_img = tag_img['src']
-        if not href.startswith('http'):
-            tag_img['src'] = urljoin(domain,src_img)
+        # src_img = tag_img['src']
+        # if not src_img.startswith('http'):
+        #     tag_img['src'] = urljoin(domain,src_img)
+        tag_img['src'] = dynamicRefProcess(domain,tag_img['src'])
     # Title get
     titleDiv = noticePage.find("div",attrs={"id":"newsTitle"})
-    if (titleDiv):# 国际事务部的notice存储不大一样(h2)，做个判断
+    if (titleDiv):# 国际事务部、计科院的notice存储不大一样(h2)，做个判断
         titleText = titleDiv.find("div").getText()
     elif(noticePage.find("h2")):
         titleText = noticePage.find("h2").getText() 
@@ -53,7 +70,10 @@ def noticeGet(url_notice,noticePage,source,category): #category指工作通知�
     path=r"notices/"+source+"/"+category+"/"
     getImage(noticePage,path+titleText)
     # 下载附件
-    cookie = validCookiesDict[url_parse.netloc]
+    # cookie = validCookiesDict[url_parse.netloc] 由于计科院不需要cookie，用下面的方法搞一个默认空值
+    with open("cookies.json","r") as cookies:
+        validCookiesDict = json.load(cookies)
+    cookie = validCookiesDict.get(url_parse.netloc,{})
     attachmentList = noticePage.find_all('li')
     if attachmentList != None:
         for attachmentItem in attachmentList:

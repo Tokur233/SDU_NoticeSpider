@@ -4,12 +4,15 @@ import csv
 import re
 import time
 import os
+import json
 
 #模块化
 # import SDUMath 
-
-# import SDUComputerScience
+import src.computerScienceUG as csug
+import src.undergraduate as ug 
 # import SDUStudentOnline
+
+import src.cookiesInit as ci
 
 #常量
 url_Undergraduate="https://www.bkjx.sdu.edu.cn/"
@@ -22,24 +25,28 @@ localtime = time.strftime("%Y-%m-%d", time.localtime())
 def targetMatch(i,rows):
     match i:
         case 1:
-            sources.append("计科本科院")
-            
-            pass
+            sources.append("计科学院")
+            csug.crawlCSUG(rows)
+            rows.append([])
         case 2:
             sources.append("本科生院")
-            undergraduate.spideUG(rows)
+            ug.crawlUG(rows)
+            rows.append([])
         case 3:
             sources.append("学生在线")
             pass
+            rows.append([])
         case 4:
             sources.append("数学本科院")
             pass
+            rows.append([])
         case 5:
             sources.append("青春山大")
             pass
+            rows.append([])
 
 print("请选择你的攻击网站(bushi):")
-print("[1]山大计科本科院(未完成)")
+print("[1]山大计科学院(未完成)")
 print("[2]山大本科生院")
 print("[3]山大学生在线(未完成)")
 print("[4]山大数学本科院(未完成)")
@@ -50,7 +57,9 @@ target=input()
 targets = re.findall(r'\d',target)
 sources=[]
 rows =[[]]
-import src.undergraduate as undergraduate #导入undergraduate和general 并初始化cookies init
+validCookiesDict = ci.validCookiesInit()
+with open("cookies.json","w") as cookies:
+    json.dump(validCookiesDict,cookies,indent= 4)
 for i in targets:
     i=int(i)
     targetMatch(i,rows)

@@ -3,17 +3,14 @@ import urllib.request
 from urllib.parse import urljoin #提供urljoin方法，便于处理动态链接，防止出现多次斜杠，并且防止多个域名,urlparse用于解析url，其中.netloc为域名
 from urllib.error import HTTPError
 import re
-
 import src.general as general
 #常量
 from src.constant import URL_UG,HEADER
 SOURCE = "本科生院"
 #函数
 
-def spideUG(rows):
-    requestWebsite = urllib.request.Request(url=URL_UG,headers=HEADER)
-    page = urllib.request.urlopen(requestWebsite)
-    soup = BeautifulSoup(page,"html.parser")
+def crawlUG(rows):
+    soup = general.getPage(URL_UG)
     noticeList =soup.find_all("div", attrs={"class":"gg-content"})
     rows.append(["工作通知:"])
     divContentProcess(noticeList[0],"工作通知",rows)
@@ -31,8 +28,7 @@ def divContentProcess(divContent,category,rows):
         formattedItemTime = re.sub(r"\[|\]","",itemTime)
         itemDiv = item.find("a") #原本是寻找class="lastestnews"的，但是发现院内信息没这个class，而且itemDiv内只有一个a标签，故摆烂，直接找a
         itemHref = itemDiv.get('href')
-        if (not re.search(r'http',itemHref)):     #处理动态链接，匹配是否有http字段判断是否为动态链接，也可以用上面str的startswith方法
-            itemHref= urljoin(URL_UG,itemHref) #这里的域名是确定的，因此不需要读取domain
+        itemHref = general.dynamicRefProcess(URL_UG,itemHref)
         itemText = itemDiv.get('title')
         rows.append([formattedItemTime,itemText,itemHref]) #这个部分和上一行按网站的设定来，可以来自于网站通知item，也可以来自于通知page的title
         # notice page处理

@@ -12,4 +12,5 @@
 *.jpeg
 *.gif
 
-temp.py
+test.py
+cookies.json
