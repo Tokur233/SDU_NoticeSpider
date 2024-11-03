@@ -22,6 +22,7 @@ url_ComputerScience="https://www.cs.sdu.edu.cn/"
 url_Math="https://www.math.sdu.edu.cn/"
 localtime = time.strftime("%Y-%m-%d", time.localtime())
 
+
 #函数
 def initCookieJson():
     validCookiesDict = ci.validCookiesInit()
@@ -60,6 +61,7 @@ print("[4]山大数学本科院(未完成)")
 print("[5]青春山大")
 print("按你需要顺序填入数字，可以不分割或随便分割")
 #处理成单数字数组，并匹配对应source
+
 target=input()
 targets = re.findall(r'\d',target)
 sources=[]
@@ -75,6 +77,5 @@ if not os.path.exists("results"):
 with open(r"results/"+source+str(localtime)+".csv","w",newline="",encoding="utf-8-sig") as f_output:
     csv_output = csv.writer(f_output)
     csv_output.writerows(rows)
-
 
 # TODO: GUI、统一模块，将内容处理统一成，从文档获取时间，标题的机制、自动爬取
